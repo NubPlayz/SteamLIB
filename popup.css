@@ -1,0 +1,263 @@
+.popup {
+  min-width: 320px;
+  max-width: 350px;
+  padding: 18px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  background: #f5f7fb;
+}
+
+.popup-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #1f2937;
+}
+
+.popup-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.popup-title-base {
+  color: #2f3744;
+}
+
+.popup-title-l {
+  color: #0013e6;
+  margin-left: 2px;
+}
+
+.popup-title-i {
+  color: #2b00ff;
+}
+
+.popup-title-b {
+  color: #000cf9;
+}
+
+.popup-mascot {
+  width: 68px;
+  height: 68px;
+  border-radius: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-mascot-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popup-card {
+  border: 1px solid #dde3ee;
+  border-radius: 16px;
+  padding: 10px 14px;
+  background: #ffffff;
+}
+
+.popup-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+}
+
+.popup-row+.popup-row {
+  border-top: 1px solid #edf1f7;
+}
+
+.popup-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #4f6ef7;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex: 0 0 auto;
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.popup-avatar--fitgirl {
+  background:#fb0000;
+}
+
+.popup-avatar--dodi {
+  background:  #000000;
+}
+
+.popup-avatar--byxatab {
+  background: #5DC32F;
+  color: #1f2937;
+  font-size: 12px;
+}
+
+.popup-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popup-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #111827;
+  line-height: 1.08;
+  transition: color 0.28s ease;
+}
+
+.popup-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #9aa4b2;
+  line-height: 1.1;
+  transition: color 0.28s ease;
+}
+
+.popup-row--off .popup-avatar {
+  background: #edf1f7;
+  color: #5c6678;
+  border: 1px solid #e2e8f0;
+}
+
+.popup-row--off .popup-name {
+  color: #374151;
+}
+
+.popup-row--off .popup-subtitle {
+  color: #9ca3af;
+}
+
+.popup-toggle {
+  position: relative;
+  width: 52px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.popup-toggle input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.popup-toggle-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #e2e8f0;
+  transition:
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.popup-toggle-track::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.popup-toggle input:checked+.popup-toggle-track.fitgirl-switch {
+  background: #fb0000;
+}
+
+.popup-toggle input:checked+.popup-toggle-track.dodi-switch {
+  background: #000000;
+}
+
+.popup-toggle input:checked+.popup-toggle-track.byxatab-switch {
+  background: #5DC32F;
+}
+
+.popup-toggle input:checked+.popup-toggle-track::before {
+  transform: translateX(22px);
+}
+
+.popup-footer {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.popup-footer-help {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 8px;
+  opacity: 1;
+}
+
+.popup-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  justify-content: center;
+  min-width: 120px;
+  padding: 10px 14px;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #334155;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid #d5e2f8;
+  box-shadow: 0 2px 6px rgba(66, 88, 255, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+.popup-footer .popup-action-btn {
+  flex: 1;
+}
+
+.popup-settings-btn {
+  flex: 1 0 100%;
+}
+
+.popup-action-btn:hover {
+  background: #f8fbff;
+  border-color: #bfd2f6;
+  box-shadow: 0 4px 12px rgba(66, 88, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.popup-action-star {
+  color: #f5b301;
+  font-size: 14px;
+}
