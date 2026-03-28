@@ -111,6 +111,11 @@
   background: #2563eb;
 }
 
+.popup-avatar--ovagames {
+  background: #f97316;
+  font-size: 11px;
+}
+
 .popup-copy {
   flex: 1;
   min-width: 0;
@@ -204,6 +209,10 @@
 
 .popup-toggle input:checked+.popup-toggle-track.steamrip-switch {
   background: #2563eb;
+}
+
+.popup-toggle input:checked+.popup-toggle-track.ovagames-switch {
+  background: #f97316;
 }
 
 .popup-toggle input:checked+.popup-toggle-track::before {
