@@ -1,0 +1,102 @@
+.goodlib-chip-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.goodlib-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0px 12px 0px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  color: rgb(51, 51, 51);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  transition:
+    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    border-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transform: scale(1) translateY(0px);
+}
+
+.goodlib-chip:hover {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: scale(1.06) translateY(-1px);
+}
+
+.goodlib-chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgb(50, 115, 220);
+  margin-right: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.goodlib-chip--fitgirl .goodlib-chip-icon {
+  background: #fb0000;
+}
+
+.goodlib-chip--dodi .goodlib-chip-icon {
+  background: #000000;
+}
+
+.goodlib-chip--byxatab .goodlib-chip-icon {
+  background: #5DC32F;
+  color: #1f2937;
+}
+
+.goodlib-chip-glyph {
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-1px) rotate(0deg);
+  transition: transform 0.3s;
+}
+
+.goodlib-chip-glyph--wide {
+  font-size: 8px;
+  transform: translateY(-0.5px) rotate(0deg);
+}
+
+.goodlib-chip:hover .goodlib-chip-glyph {
+  transform: translateY(-1px) rotate(15deg);
+}
+
+.goodlib-chip:hover .goodlib-chip-glyph--wide {
+  transform: translateY(-0.5px) rotate(15deg);
+}
+
+.goodlib-chip-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgb(51, 51, 51);
+  line-height: 1;
+  letter-spacing: -0.2px;
+}
