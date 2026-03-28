@@ -107,6 +107,10 @@
   font-size: 12px;
 }
 
+.popup-avatar--steamrip {
+  background: #2563eb;
+}
+
 .popup-copy {
   flex: 1;
   min-width: 0;
@@ -196,6 +200,10 @@
 
 .popup-toggle input:checked+.popup-toggle-track.byxatab-switch {
   background: #5DC32F;
+}
+
+.popup-toggle input:checked+.popup-toggle-track.steamrip-switch {
+  background: #2563eb;
 }
 
 .popup-toggle input:checked+.popup-toggle-track::before {
