@@ -76,6 +76,10 @@
   background: #2563eb;
 }
 
+.goodlib-chip--ovagames .goodlib-chip-icon {
+  background: #f97316;
+}
+
 .goodlib-chip-glyph {
   font-size: 9px;
   font-weight: 800;
