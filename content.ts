@@ -14,6 +14,7 @@ const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
 const STEAMRIP_ENABLED_KEY = "steamripEnabled"
+const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
 
 const steamTitleSelectors = [
   "#appHubAppName",
@@ -59,13 +60,14 @@ const removeChip = () => {
   }
 }
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip"
+type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip" | "ovagames"
 
 const sourceMeta: Record<SourceKey, { label: string; glyph: string }> = {
   fitgirl: { label: "FitGirl", glyph: "FG" },
   dodi: { label: "DODI", glyph: "D" },
   byxatab: { label: "ByXatab", glyph: "BX" },
-  steamrip: { label: "SteamRIP", glyph: "SR" }
+  steamrip: { label: "SteamRIP", glyph: "SR" },
+  ovagames: { label: "OVA Games", glyph: "OVA" }
 }
 
 const buildSourceUrl = (source: SourceKey, query: string) => {
@@ -81,6 +83,10 @@ const buildSourceUrl = (source: SourceKey, query: string) => {
 
   if (source === "steamrip") {
     return `https://steamrip.com/?s=${encoded}`
+  }
+
+  if (source === "ovagames") {
+    return `https://www.ovagames.com/?s=${encoded}`
   }
 
   return `https://fitgirl-repacks.site/?s=${encoded}`
@@ -170,6 +176,15 @@ const injectChips = (enabledBySource: Record<SourceKey, boolean>) => {
     orderedChips.push(steamripChip)
   }
 
+  let ovagamesChip = wrap.querySelector(`[${CHIP_ATTR}="ovagames"]`)
+  if (!(ovagamesChip instanceof HTMLElement) && enabledBySource.ovagames) {
+    ovagamesChip = makeChip("ovagames", gameTitle)
+  }
+  if (ovagamesChip instanceof HTMLElement && enabledBySource.ovagames) {
+    ovagamesChip.setAttribute("data-search-query", gameTitle)
+    orderedChips.push(ovagamesChip)
+  }
+
   const currentOrder = Array.from(wrap.children).filter(
     (node) => node instanceof HTMLElement && node.hasAttribute(CHIP_ATTR)
   )
@@ -187,7 +202,8 @@ const enabledBySource: Record<SourceKey, boolean> = {
   fitgirl: true,
   dodi: true,
   byxatab: true,
-  steamrip: true
+  steamrip: true,
+  ovagames: true
 }
 
 const syncChipToState = () => {
@@ -195,7 +211,8 @@ const syncChipToState = () => {
     !enabledBySource.fitgirl &&
     !enabledBySource.dodi &&
     !enabledBySource.byxatab &&
-    !enabledBySource.steamrip
+    !enabledBySource.steamrip &&
+    !enabledBySource.ovagames
   ) {
     removeChip()
     return
@@ -206,12 +223,19 @@ const syncChipToState = () => {
 
 const initializeEnabledState = () => {
   chrome.storage.sync.get(
-    [FITGIRL_ENABLED_KEY, DODI_ENABLED_KEY, BYXATAB_ENABLED_KEY, STEAMRIP_ENABLED_KEY],
+    [
+      FITGIRL_ENABLED_KEY,
+      DODI_ENABLED_KEY,
+      BYXATAB_ENABLED_KEY,
+      STEAMRIP_ENABLED_KEY,
+      OVA_GAMES_ENABLED_KEY
+    ],
     (result) => {
       const fitgirlStored = result[FITGIRL_ENABLED_KEY]
       const dodiStored = result[DODI_ENABLED_KEY]
       const byxatabStored = result[BYXATAB_ENABLED_KEY]
       const steamripStored = result[STEAMRIP_ENABLED_KEY]
+      const ovagamesStored = result[OVA_GAMES_ENABLED_KEY]
 
       enabledBySource.fitgirl =
         typeof fitgirlStored === "boolean" ? fitgirlStored : true
@@ -220,6 +244,8 @@ const initializeEnabledState = () => {
         typeof byxatabStored === "boolean" ? byxatabStored : true
       enabledBySource.steamrip =
         typeof steamripStored === "boolean" ? steamripStored : true
+      enabledBySource.ovagames =
+        typeof ovagamesStored === "boolean" ? ovagamesStored : true
 
       syncChipToState()
     }
@@ -234,7 +260,8 @@ const handleDomChange = () => {
     !enabledBySource.fitgirl &&
     !enabledBySource.dodi &&
     !enabledBySource.byxatab &&
-    !enabledBySource.steamrip
+    !enabledBySource.steamrip &&
+    !enabledBySource.ovagames
   ) {
     return
   }
@@ -304,6 +331,11 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     const steamripNext = changes[STEAMRIP_ENABLED_KEY].newValue
     enabledBySource.steamrip =
       typeof steamripNext === "boolean" ? steamripNext : true
+  }
+  if (OVA_GAMES_ENABLED_KEY in changes) {
+    const ovagamesNext = changes[OVA_GAMES_ENABLED_KEY].newValue
+    enabledBySource.ovagames =
+      typeof ovagamesNext === "boolean" ? ovagamesNext : true
   }
 
   syncChipToState()
