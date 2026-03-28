@@ -72,6 +72,10 @@
   color: #1f2937;
 }
 
+.goodlib-chip--steamrip .goodlib-chip-icon {
+  background: #2563eb;
+}
+
 .goodlib-chip-glyph {
   font-size: 9px;
   font-weight: 800;
