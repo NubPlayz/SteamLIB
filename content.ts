@@ -13,6 +13,7 @@ const CHIPS_WRAP_ATTR = "data-steamlib-chip-wrap"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
+const STEAMRIP_ENABLED_KEY = "steamripEnabled"
 
 const steamTitleSelectors = [
   "#appHubAppName",
@@ -58,12 +59,13 @@ const removeChip = () => {
   }
 }
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab"
+type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip"
 
 const sourceMeta: Record<SourceKey, { label: string; glyph: string }> = {
   fitgirl: { label: "FitGirl", glyph: "FG" },
   dodi: { label: "DODI", glyph: "D" },
-  byxatab: { label: "ByXatab", glyph: "BX" }
+  byxatab: { label: "ByXatab", glyph: "BX" },
+  steamrip: { label: "SteamRIP", glyph: "SR" }
 }
 
 const buildSourceUrl = (source: SourceKey, query: string) => {
@@ -75,6 +77,10 @@ const buildSourceUrl = (source: SourceKey, query: string) => {
 
   if (source === "byxatab") {
     return `https://byxatab.com/index.php?do=search&subaction=search&story=${encoded}`
+  }
+
+  if (source === "steamrip") {
+    return `https://steamrip.com/?s=${encoded}`
   }
 
   return `https://fitgirl-repacks.site/?s=${encoded}`
@@ -155,6 +161,15 @@ const injectChips = (enabledBySource: Record<SourceKey, boolean>) => {
     orderedChips.push(byxatabChip)
   }
 
+  let steamripChip = wrap.querySelector(`[${CHIP_ATTR}="steamrip"]`)
+  if (!(steamripChip instanceof HTMLElement) && enabledBySource.steamrip) {
+    steamripChip = makeChip("steamrip", gameTitle)
+  }
+  if (steamripChip instanceof HTMLElement && enabledBySource.steamrip) {
+    steamripChip.setAttribute("data-search-query", gameTitle)
+    orderedChips.push(steamripChip)
+  }
+
   const currentOrder = Array.from(wrap.children).filter(
     (node) => node instanceof HTMLElement && node.hasAttribute(CHIP_ATTR)
   )
@@ -171,11 +186,17 @@ const injectChips = (enabledBySource: Record<SourceKey, boolean>) => {
 const enabledBySource: Record<SourceKey, boolean> = {
   fitgirl: true,
   dodi: true,
-  byxatab: true
+  byxatab: true,
+  steamrip: true
 }
 
 const syncChipToState = () => {
-  if (!enabledBySource.fitgirl && !enabledBySource.dodi && !enabledBySource.byxatab) {
+  if (
+    !enabledBySource.fitgirl &&
+    !enabledBySource.dodi &&
+    !enabledBySource.byxatab &&
+    !enabledBySource.steamrip
+  ) {
     removeChip()
     return
   }
@@ -185,17 +206,20 @@ const syncChipToState = () => {
 
 const initializeEnabledState = () => {
   chrome.storage.sync.get(
-    [FITGIRL_ENABLED_KEY, DODI_ENABLED_KEY, BYXATAB_ENABLED_KEY],
+    [FITGIRL_ENABLED_KEY, DODI_ENABLED_KEY, BYXATAB_ENABLED_KEY, STEAMRIP_ENABLED_KEY],
     (result) => {
       const fitgirlStored = result[FITGIRL_ENABLED_KEY]
       const dodiStored = result[DODI_ENABLED_KEY]
       const byxatabStored = result[BYXATAB_ENABLED_KEY]
+      const steamripStored = result[STEAMRIP_ENABLED_KEY]
 
       enabledBySource.fitgirl =
         typeof fitgirlStored === "boolean" ? fitgirlStored : true
       enabledBySource.dodi = typeof dodiStored === "boolean" ? dodiStored : true
       enabledBySource.byxatab =
         typeof byxatabStored === "boolean" ? byxatabStored : true
+      enabledBySource.steamrip =
+        typeof steamripStored === "boolean" ? steamripStored : true
 
       syncChipToState()
     }
@@ -206,7 +230,12 @@ let injectTimeout: ReturnType<typeof setTimeout> | null = null
 let lastUrl = window.location.href
 
 const handleDomChange = () => {
-  if (!enabledBySource.fitgirl && !enabledBySource.dodi && !enabledBySource.byxatab) {
+  if (
+    !enabledBySource.fitgirl &&
+    !enabledBySource.dodi &&
+    !enabledBySource.byxatab &&
+    !enabledBySource.steamrip
+  ) {
     return
   }
 
@@ -270,6 +299,11 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     const byxatabNext = changes[BYXATAB_ENABLED_KEY].newValue
     enabledBySource.byxatab =
       typeof byxatabNext === "boolean" ? byxatabNext : true
+  }
+  if (STEAMRIP_ENABLED_KEY in changes) {
+    const steamripNext = changes[STEAMRIP_ENABLED_KEY].newValue
+    enabledBySource.steamrip =
+      typeof steamripNext === "boolean" ? steamripNext : true
   }
 
   syncChipToState()
