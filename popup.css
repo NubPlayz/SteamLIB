@@ -108,7 +108,7 @@
 }
 
 .popup-avatar--steamrip {
-  background: #2563eb;
+  background: #4B367C;
 }
 
 .popup-avatar--ovagames {
@@ -208,7 +208,7 @@
 }
 
 .popup-toggle input:checked+.popup-toggle-track.steamrip-switch {
-  background: #2563eb;
+  background: #4B367C;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.ovagames-switch {
