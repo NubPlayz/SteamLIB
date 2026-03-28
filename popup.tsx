@@ -6,8 +6,9 @@ import mascotCat from "./mascot cat.png"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
+const STEAMRIP_ENABLED_KEY = "steamripEnabled"
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab"
+type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip"
 
 type SourceConfig = {
   avatarClassName: string
@@ -55,10 +56,20 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
     subtitle: "byxatab.com",
     tagClassName: "anime-tag-byxatab",
     trackClassName: "byxatab-switch"
+  },
+  steamrip: {
+    avatarClassName: "popup-avatar--steamrip",
+    avatarText: "SR",
+    label: "SteamRIP",
+    rowClassName: "anime-row-steamrip",
+    storageKey: STEAMRIP_ENABLED_KEY,
+    subtitle: "steamrip.com",
+    tagClassName: "anime-tag-steamrip",
+    trackClassName: "steamrip-switch"
   }
 }
 
-const sourceKeys: SourceKey[] = ["fitgirl", "dodi", "byxatab"]
+const sourceKeys: SourceKey[] = ["fitgirl", "dodi", "byxatab", "steamrip"]
 const sourceElements = {} as Record<SourceKey, SourceElements>
 
 const createElement = <K extends keyof HTMLElementTagNameMap>(
