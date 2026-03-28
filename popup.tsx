@@ -7,8 +7,9 @@ const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
 const STEAMRIP_ENABLED_KEY = "steamripEnabled"
+const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip"
+type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip" | "ovagames"
 
 type SourceConfig = {
   avatarClassName: string
@@ -66,10 +67,20 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
     subtitle: "steamrip.com",
     tagClassName: "anime-tag-steamrip",
     trackClassName: "steamrip-switch"
+  },
+  ovagames: {
+    avatarClassName: "popup-avatar--ovagames",
+    avatarText: "OVA",
+    label: "OVA Games",
+    rowClassName: "anime-row-ovagames",
+    storageKey: OVA_GAMES_ENABLED_KEY,
+    subtitle: "ovagames.com",
+    tagClassName: "anime-tag-ovagames",
+    trackClassName: "ovagames-switch"
   }
 }
 
-const sourceKeys: SourceKey[] = ["fitgirl", "dodi", "byxatab", "steamrip"]
+const sourceKeys: SourceKey[] = ["fitgirl", "dodi", "byxatab", "steamrip", "ovagames"]
 const sourceElements = {} as Record<SourceKey, SourceElements>
 
 const createElement = <K extends keyof HTMLElementTagNameMap>(
