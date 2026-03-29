@@ -1,4 +1,5 @@
 import { animate } from "animejs"
+import { useEffect, useState } from "react"
 
 import "./popup.css"
 import mascotCat from "./mascot cat.png"
@@ -20,11 +21,6 @@ type SourceConfig = {
   subtitle: string
   tagClassName: string
   trackClassName: string
-}
-
-type SourceElements = {
-  input: HTMLInputElement
-  row: HTMLDivElement
 }
 
 const sourceConfig: Record<SourceKey, SourceConfig> = {
@@ -80,32 +76,20 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
   }
 }
 
-const sourceKeys: SourceKey[] = ["fitgirl", "dodi", "byxatab", "steamrip", "ovagames"]
-const sourceElements = {} as Record<SourceKey, SourceElements>
+const sourceKeys: SourceKey[] = [
+  "fitgirl",
+  "dodi",
+  "byxatab",
+  "steamrip",
+  "ovagames"
+]
 
-const createElement = <K extends keyof HTMLElementTagNameMap>(
-  tagName: K,
-  className?: string,
-  textContent?: string
-) => {
-  const element = document.createElement(tagName)
-  if (className) {
-    element.className = className
-  }
-  if (textContent !== undefined) {
-    element.textContent = textContent
-  }
-  return element
-}
-
-const applySourceState = (source: SourceKey, isEnabled: boolean) => {
-  const elements = sourceElements[source]
-  if (!elements) {
-    return
-  }
-
-  elements.input.checked = isEnabled
-  elements.row.classList.toggle("popup-row--off", !isEnabled)
+const defaultEnabledBySource: Record<SourceKey, boolean> = {
+  fitgirl: true,
+  dodi: true,
+  byxatab: true,
+  steamrip: true,
+  ovagames: true
 }
 
 const runToggleAnimation = (source: SourceKey, isEnabled: boolean) => {
@@ -123,155 +107,157 @@ const runToggleAnimation = (source: SourceKey, isEnabled: boolean) => {
   })
 }
 
-const createSettingsBtn = () => {
-  const btn = createElement("button", "popup-action-btn popup-settings-btn")
-  const icon = createElement("span", "popup-action-star")
-  icon.setAttribute("aria-hidden", "true")
-  icon.textContent = String.fromCharCode(0x2699)
+const getStoredEnabledBySource = (
+  result: Record<string, unknown>
+): Record<SourceKey, boolean> => {
+  const nextEnabledBySource = { ...defaultEnabledBySource }
 
-  btn.append(icon, createElement("span", undefined, "Settings"))
-
-  btn.addEventListener("click", () => {
-    chrome.runtime.openOptionsPage()
-    window.close()
-  })
-
-  return btn
-}
-
-const createActionBtn = (label: string, leadingText?: string) => {
-  const btn = createElement("button", "popup-action-btn")
-
-  if (leadingText) {
-    const leading = createElement("span", "popup-action-star", leadingText)
-    leading.setAttribute("aria-hidden", "true")
-    btn.appendChild(leading)
-  }
-
-  btn.appendChild(createElement("span", undefined, label))
-
-  return btn
-}
-
-const createPopupRow = (source: SourceKey) => {
-  const config = sourceConfig[source]
-  const row = createElement("div", `popup-row ${config.rowClassName}`)
-
-  const avatarClassName = [
-    "popup-avatar",
-    config.avatarClassName,
-    config.tagClassName
-  ].join(" ")
-
-  const avatar = createElement("div", avatarClassName, config.avatarText)
-
-  const copy = createElement("div", "popup-copy")
-  copy.append(
-    createElement("div", "popup-name", config.label),
-    createElement("div", "popup-subtitle", config.subtitle)
-  )
-
-  const toggle = createElement("label", "popup-toggle")
-  const input = createElement("input") as HTMLInputElement
-  input.type = "checkbox"
-  input.checked = true
-  input.addEventListener("change", () => {
-    const nextValue = input.checked
-    applySourceState(source, nextValue)
-    chrome.storage.sync.set({ [config.storageKey]: nextValue })
-    runToggleAnimation(source, nextValue)
-  })
-
-  const track = createElement(
-    "span",
-    `popup-toggle-track ${config.trackClassName}`
-  )
-  toggle.append(input, track)
-
-  row.append(avatar, copy, toggle)
-  sourceElements[source] = { input, row }
-
-  return row
-}
-
-const syncFromStorage = () => {
-  chrome.storage.sync.get(
-    sourceKeys.map((source) => sourceConfig[source].storageKey),
-    (result) => {
-      for (const source of sourceKeys) {
-        const storedValue = result[sourceConfig[source].storageKey]
-        applySourceState(source, typeof storedValue === "boolean" ? storedValue : true)
-      }
-    }
-  )
-}
-
-const mountPopup = () => {
-  const root = document.getElementById("__plasmo")
-  if (!(root instanceof HTMLElement) || root.childElementCount > 0) {
-    return
-  }
-
-  const popup = createElement("div", "popup")
-
-  const header = createElement("div", "popup-header")
-  const title = createElement("h2", "popup-title")
-  title.append(
-    createElement("span", "popup-title-base", "Steam"),
-    createElement("span", "popup-title-l", "L"),
-    createElement("span", "popup-title-i", "I"),
-    createElement("span", "popup-title-b", "B")
-  )
-
-  const mascotWrap = createElement("div", "popup-mascot")
-  mascotWrap.setAttribute("aria-label", "Steamlib mascot cat")
-  mascotWrap.title = "Mascot"
-
-  const mascotImage = createElement("img", "popup-mascot-image") as HTMLImageElement
-  mascotImage.src = mascotCat
-  mascotImage.alt = "Mascot cat"
-  mascotWrap.appendChild(mascotImage)
-
-  header.append(title, mascotWrap)
-
-  const card = createElement("div", "popup-card")
   for (const source of sourceKeys) {
-    card.appendChild(createPopupRow(source))
+    const storedValue = result[sourceConfig[source].storageKey]
+    nextEnabledBySource[source] =
+      typeof storedValue === "boolean" ? storedValue : true
   }
 
-  const footer = createElement("div", "popup-footer")
-  footer.append(
-    createActionBtn("GitHub", "*"),
-    createActionBtn("Site"),
-    createSettingsBtn()
-  )
+  return nextEnabledBySource
+}
 
-  popup.append(header, card, footer)
-  root.appendChild(popup)
+function PopupIndex() {
+  const [enabledBySource, setEnabledBySource] = useState(defaultEnabledBySource)
 
-  syncFromStorage()
+  useEffect(() => {
+    chrome.storage.sync.get(
+      sourceKeys.map((source) => sourceConfig[source].storageKey),
+      (result) => {
+        setEnabledBySource(getStoredEnabledBySource(result))
+      }
+    )
 
-  chrome.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName !== "sync") {
-      return
-    }
-
-    for (const source of sourceKeys) {
-      const change = changes[sourceConfig[source].storageKey]
-      if (!change) {
-        continue
+    const handleStorageChange = (
+      changes: Record<string, chrome.storage.StorageChange>,
+      areaName: string
+    ) => {
+      if (areaName !== "sync") {
+        return
       }
 
-      applySourceState(
-        source,
-        typeof change.newValue === "boolean" ? change.newValue : true
-      )
+      setEnabledBySource((current) => {
+        let didChange = false
+        const nextEnabledBySource = { ...current }
+
+        for (const source of sourceKeys) {
+          const change = changes[sourceConfig[source].storageKey]
+          if (!change) {
+            continue
+          }
+
+          nextEnabledBySource[source] =
+            typeof change.newValue === "boolean" ? change.newValue : true
+          didChange = true
+        }
+
+        return didChange ? nextEnabledBySource : current
+      })
     }
-  })
+
+    chrome.storage.onChanged.addListener(handleStorageChange)
+
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange)
+    }
+  }, [])
+
+  const handleToggle = (source: SourceKey, nextValue: boolean) => {
+    setEnabledBySource((current) => ({
+      ...current,
+      [source]: nextValue
+    }))
+
+    chrome.storage.sync.set({ [sourceConfig[source].storageKey]: nextValue })
+    runToggleAnimation(source, nextValue)
+  }
+
+  return (
+    <div className="popup">
+      <div className="popup-header">
+        <h2 className="popup-title">
+          <span className="popup-title-base">Steam</span>
+          <span className="popup-title-l">L</span>
+          <span className="popup-title-i">I</span>
+          <span className="popup-title-b">B</span>
+        </h2>
+
+        <div
+          aria-label="Steamlib mascot cat"
+          className="popup-mascot"
+          title="Mascot">
+          <img
+            alt="Mascot cat"
+            className="popup-mascot-image"
+            src={mascotCat}
+          />
+        </div>
+      </div>
+
+      <div className="popup-card">
+        {sourceKeys.map((source) => {
+          const config = sourceConfig[source]
+          const isEnabled = enabledBySource[source]
+
+          return (
+            <div
+              className={[
+                "popup-row",
+                config.rowClassName,
+                !isEnabled ? "popup-row--off" : ""
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              key={source}>
+              <div
+                className={[
+                  "popup-avatar",
+                  config.avatarClassName,
+                  config.tagClassName
+                ].join(" ")}>
+                {config.avatarText}
+              </div>
+
+              <div className="popup-copy">
+                <div className="popup-name">{config.label}</div>
+                <div className="popup-subtitle">{config.subtitle}</div>
+              </div>
+
+              <label className="popup-toggle">
+                <input
+                  checked={isEnabled}
+                  onChange={(event) =>
+                    handleToggle(source, event.currentTarget.checked)
+                  }
+                  type="checkbox"
+                />
+                <span
+                  className={`popup-toggle-track ${config.trackClassName}`}
+                />
+              </label>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="popup-footer">
+        <button className="popup-action-btn" type="button">
+          <span aria-hidden="true" className="popup-action-star">
+            *
+          </span>
+          <span>GitHub</span>
+        </button>
+
+        <button className="popup-action-btn" type="button">
+          <span>Site</span>
+        </button>
+      </div>
+    </div>
+  )
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", mountPopup, { once: true })
-} else {
-  mountPopup()
-}
+export default PopupIndex
