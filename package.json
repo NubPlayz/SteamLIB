@@ -27,10 +27,6 @@
     "permissions": [
       "storage"
     ],
-    "options_ui": {
-      "page": "options.html",
-      "open_in_tab": true
-    },
     "host_permissions": [
       "https://store.steampowered.com/app/*",
       "https://store.steampowered.com/agecheck/app/*"
