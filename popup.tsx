@@ -1,16 +1,24 @@
 import { animate } from "animejs"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import "./popup.css"
 import mascotCat from "./mascot cat.png"
 
+const GOG_ENABLED_KEY = "gogEnabled"
+const EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY = "externalSourcesDisclaimerSeen"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
 const STEAMRIP_ENABLED_KEY = "steamripEnabled"
 const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip" | "ovagames"
+type SourceKey =
+  | "gog"
+  | "fitgirl"
+  | "dodi"
+  | "byxatab"
+  | "steamrip"
+  | "ovagames"
 
 type SourceConfig = {
   avatarClassName: string
@@ -24,6 +32,16 @@ type SourceConfig = {
 }
 
 const sourceConfig: Record<SourceKey, SourceConfig> = {
+  gog: {
+    avatarClassName: "popup-avatar--gog",
+    avatarText: "GOG",
+    label: "GOG",
+    rowClassName: "anime-row-gog",
+    storageKey: GOG_ENABLED_KEY,
+    subtitle: "www.gog.com/en",
+    tagClassName: "anime-tag-gog",
+    trackClassName: "gog-switch"
+  },
   fitgirl: {
     avatarClassName: "popup-avatar--fitgirl",
     avatarText: "FG",
@@ -77,6 +95,7 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
 }
 
 const sourceKeys: SourceKey[] = [
+  "gog",
   "fitgirl",
   "dodi",
   "byxatab",
@@ -85,11 +104,12 @@ const sourceKeys: SourceKey[] = [
 ]
 
 const defaultEnabledBySource: Record<SourceKey, boolean> = {
-  fitgirl: true,
-  dodi: true,
-  byxatab: true,
-  steamrip: true,
-  ovagames: true
+  gog: true,
+  fitgirl: false,
+  dodi: false,
+  byxatab: false,
+  steamrip: false,
+  ovagames: false
 }
 
 const runToggleAnimation = (source: SourceKey, isEnabled: boolean) => {
@@ -115,20 +135,37 @@ const getStoredEnabledBySource = (
   for (const source of sourceKeys) {
     const storedValue = result[sourceConfig[source].storageKey]
     nextEnabledBySource[source] =
-      typeof storedValue === "boolean" ? storedValue : true
+      typeof storedValue === "boolean"
+        ? storedValue
+        : defaultEnabledBySource[source]
   }
 
   return nextEnabledBySource
 }
 
+const hasEnabledAnyOffByDefaultSource = (
+  enabledBySource: Record<SourceKey, boolean>
+) =>
+  sourceKeys.some(
+    (source) => !defaultEnabledBySource[source] && enabledBySource[source]
+  )
+
 function PopupIndex() {
   const [enabledBySource, setEnabledBySource] = useState(defaultEnabledBySource)
+  const [hasSeenDisclaimer, setHasSeenDisclaimer] = useState(false)
+  const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false)
+  const [disclaimerSource, setDisclaimerSource] = useState<SourceKey | null>(null)
+  const disclaimerDialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
     chrome.storage.sync.get(
-      sourceKeys.map((source) => sourceConfig[source].storageKey),
+      [
+        ...sourceKeys.map((source) => sourceConfig[source].storageKey),
+        EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY
+      ],
       (result) => {
         setEnabledBySource(getStoredEnabledBySource(result))
+        setHasSeenDisclaimer(result[EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY] === true)
       }
     )
 
@@ -138,6 +175,12 @@ function PopupIndex() {
     ) => {
       if (areaName !== "sync") {
         return
+      }
+
+      if (EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY in changes) {
+        setHasSeenDisclaimer(
+          changes[EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY].newValue === true
+        )
       }
 
       setEnabledBySource((current) => {
@@ -151,7 +194,9 @@ function PopupIndex() {
           }
 
           nextEnabledBySource[source] =
-            typeof change.newValue === "boolean" ? change.newValue : true
+            typeof change.newValue === "boolean"
+              ? change.newValue
+              : defaultEnabledBySource[source]
           didChange = true
         }
 
@@ -166,11 +211,74 @@ function PopupIndex() {
     }
   }, [])
 
+  useEffect(() => {
+    const dialog = disclaimerDialogRef.current
+    if (!dialog) {
+      return
+    }
+
+    if (isDisclaimerOpen) {
+      if (!dialog.open) {
+        dialog.showModal()
+      }
+      return
+    }
+
+    if (dialog.open) {
+      dialog.close()
+    }
+  }, [isDisclaimerOpen])
+
+  const handleDisclaimerClose = () => {
+    const action = disclaimerDialogRef.current?.returnValue
+    const source = disclaimerSource
+
+    setIsDisclaimerOpen(false)
+    setDisclaimerSource(null)
+
+    if (action === "continue" && source) {
+      setHasSeenDisclaimer(true)
+      chrome.storage.sync.set({
+        [EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY]: true,
+        [sourceConfig[source].storageKey]: true
+      })
+      return
+    }
+
+    if (!source) {
+      return
+    }
+
+    setHasSeenDisclaimer(false)
+    setEnabledBySource((current) => ({
+      ...current,
+      [source]: false
+    }))
+    chrome.storage.sync.set({
+      [EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY]: false,
+      [sourceConfig[source].storageKey]: false
+    })
+    runToggleAnimation(source, false)
+  }
+
   const handleToggle = (source: SourceKey, nextValue: boolean) => {
+    const shouldShowDisclaimer =
+      source !== "gog" &&
+      nextValue &&
+      !hasSeenDisclaimer &&
+      !hasEnabledAnyOffByDefaultSource(enabledBySource)
+
     setEnabledBySource((current) => ({
       ...current,
       [source]: nextValue
     }))
+
+    if (shouldShowDisclaimer) {
+      setDisclaimerSource(source)
+      setIsDisclaimerOpen(true)
+      runToggleAnimation(source, nextValue)
+      return
+    }
 
     chrome.storage.sync.set({ [sourceConfig[source].storageKey]: nextValue })
     runToggleAnimation(source, nextValue)
@@ -178,12 +286,70 @@ function PopupIndex() {
 
   return (
     <div className="popup">
+      <dialog
+        aria-labelledby="popup-disclaimer-title"
+        className="popup-disclaimer"
+        onCancel={(event) => {
+          event.preventDefault()
+          disclaimerDialogRef.current?.close("cancel")
+        }}
+        onClose={handleDisclaimerClose}
+        ref={disclaimerDialogRef}>
+        <div className="popup-disclaimer-badge">DISCLAIMER</div>
+        <h3 className="popup-disclaimer-title" id="popup-disclaimer-title">
+          Proceed at your own risk
+        </h3>
+        <p className="popup-disclaimer-subtitle">
+          SteamLIB is not responsible for anything that happens once you leave.
+        </p>
+        <p className="popup-disclaimer-copy">
+          Turning on extra sources opens third-party websites. SteamLIB only
+          creates search links and does not host, verify, or control those
+          sites or their content.
+        </p>
+        <p className="popup-disclaimer-copy popup-disclaimer-copy--tight">
+          SteamLIB disclaims all liability for:
+        </p>
+        <ul className="popup-disclaimer-list">
+          <li className="popup-disclaimer-item">
+            Any misuse of SteamLIB, including use of third-party sites, search
+            links, or content accessed after leaving the extension.
+          </li>
+          <li className="popup-disclaimer-item">
+            Legal issues, including DMCA claims or intellectual property
+            disputes, arising from your use of third-party services or content
+            reached through SteamLIB.
+          </li>
+          <li className="popup-disclaimer-item">
+            Any damages, losses, or liabilities resulting from your use of
+            SteamLIB or external sites, including data loss, device issues, or
+            legal consequences.
+          </li>
+        </ul>
+        <p className="popup-disclaimer-copy">
+          You are responsible for what you open and for following each site&apos;s
+          terms and your local laws.
+        </p>
+        <form className="popup-disclaimer-actions" method="dialog">
+          <button
+            className="popup-disclaimer-btn popup-disclaimer-btn--cancel"
+            value="cancel">
+            Cancel
+          </button>
+          <button
+            className="popup-disclaimer-btn popup-disclaimer-btn--continue"
+            value="continue">
+            Continue
+          </button>
+        </form>
+      </dialog>
+
       <div className="popup-header">
         <h2 className="popup-title">
           <span className="popup-title-base">Steam</span>
           <span className="popup-title-l">L</span>
-          <span className="popup-title-i">I</span>
-          <span className="popup-title-b">B</span>
+          <span className="popup-title-l">I</span>
+          <span className="popup-title-l">B</span>
         </h2>
 
         <div
@@ -245,16 +411,28 @@ function PopupIndex() {
       </div>
 
       <div className="popup-footer">
-        <button className="popup-action-btn" type="button">
+        <div className="popup-footer-help">
+          Support me by starring on GitHub and rating it.
+        </div>
+
+        <a
+          className="popup-action-btn"
+          href="https://github.com/NubPlayz/SteamLIB"
+          rel="noopener noreferrer"
+          target="_blank">
           <span aria-hidden="true" className="popup-action-star">
             *
           </span>
           <span>GitHub</span>
-        </button>
+        </a>
 
-        <button className="popup-action-btn" type="button">
+        <a
+          className="popup-action-btn"
+          href="https://steamlib-by-nubplayz.vercel.app"
+          rel="noopener noreferrer"
+          target="_blank">
           <span>Site</span>
-        </button>
+        </a>
       </div>
     </div>
   )
