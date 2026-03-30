@@ -1,4 +1,4 @@
-# <img width="128" height="128" alt="Buzo" src="https://github.com/user-attachments/assets/2331d037-3bba-48b7-8ba4-4c3dbfd121a8" /> SteamLib
+#  SteamLib  <img width="100" height="100" alt="Buzo" src="https://github.com/user-attachments/assets/2331d037-3bba-48b7-8ba4-4c3dbfd121a8" />
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue?logo=googlechrome)]()
 [![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange?logo=firefox)]()
