@@ -63,6 +63,10 @@
   background: #ec4899;
 }
 
+.goodlib-chip--gog .goodlib-chip-icon {
+  background: #6b2f8a;
+}
+
 .goodlib-chip--dodi .goodlib-chip-icon {
   background: #000000;
 }
@@ -73,7 +77,7 @@
 }
 
 .goodlib-chip--steamrip .goodlib-chip-icon {
-  background: #4B367C;
+  background: #003385;
 }
 
 .goodlib-chip--ovagames .goodlib-chip-icon {
