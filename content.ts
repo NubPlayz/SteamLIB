@@ -10,6 +10,7 @@ export const config = {
 const CHIP_ATTR = "data-steamlib-chip"
 const CHIP_CLASS = "goodlib-chip"
 const CHIPS_WRAP_ATTR = "data-steamlib-chip-wrap"
+const GOG_ENABLED_KEY = "gogEnabled"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
@@ -23,6 +24,9 @@ const steamTitleSelectors = [
 ]
 
 const normalizeText = (value: string) => value.replace(/\s+/g, " ").trim()
+
+const getGogSearchQuery = (query: string) =>
+  normalizeText(query.replace(/[™®©]/g, " ").replace(/[’]/g, "'"))
 
 const getGameTitle = (): HTMLElement | null => {
   for (const selector of steamTitleSelectors) {
@@ -60,18 +64,74 @@ const removeChip = () => {
   }
 }
 
-type SourceKey = "fitgirl" | "dodi" | "byxatab" | "steamrip" | "ovagames"
+type SourceKey =
+  | "gog"
+  | "fitgirl"
+  | "dodi"
+  | "byxatab"
+  | "steamrip"
+  | "ovagames"
 
-const sourceMeta: Record<SourceKey, { label: string; glyph: string }> = {
-  fitgirl: { label: "FitGirl", glyph: "FG" },
-  dodi: { label: "DODI", glyph: "D" },
-  byxatab: { label: "ByXatab", glyph: "BX" },
-  steamrip: { label: "SteamRIP", glyph: "SR" },
-  ovagames: { label: "OVA Games", glyph: "OVA" }
+const sourceKeys: SourceKey[] = [
+  "gog",
+  "fitgirl",
+  "dodi",
+  "byxatab",
+  "steamrip",
+  "ovagames"
+]
+
+const sourceMeta: Record<
+  SourceKey,
+  { glyph: string; label: string; storageKey: string }
+> = {
+  gog: { 
+    label: "GOG",
+    glyph: "G",
+    storageKey: GOG_ENABLED_KEY },
+  fitgirl: {
+    label: "FitGirl",
+    glyph: "FG",
+    storageKey: FITGIRL_ENABLED_KEY
+  },
+
+  dodi: { 
+    label: "DODI", 
+    glyph: "D", 
+    storageKey: DODI_ENABLED_KEY },
+  byxatab: {
+    label: "ByXatab",
+    glyph: "BX",
+    storageKey: BYXATAB_ENABLED_KEY
+  },
+  steamrip: {
+    label: "SteamRIP",
+    glyph: "SR",
+    storageKey: STEAMRIP_ENABLED_KEY
+  },
+  ovagames: {
+    label: "OVA Games",
+    glyph: "OVA",
+    storageKey: OVA_GAMES_ENABLED_KEY
+  }
+}
+
+const defaultEnabledBySource: Record<SourceKey, boolean> = {
+  gog: true,
+  fitgirl: false,
+  dodi: false,
+  byxatab: false,
+  steamrip: false,
+  ovagames: false
 }
 
 const buildSourceUrl = (source: SourceKey, query: string) => {
   const encoded = encodeURIComponent(query)
+
+  if (source === "gog") {
+    const gogQuery = encodeURIComponent(getGogSearchQuery(query))
+    return `https://www.gog.com/en/games?query=${gogQuery}&order=desc:score`
+  }
 
   if (source === "dodi") {
     return `https://dodi-repacks.site/?s=${encoded}`
@@ -140,49 +200,16 @@ const injectChips = (enabledBySource: Record<SourceKey, boolean>) => {
 
   const orderedChips: HTMLElement[] = []
 
-  let fitgirlChip = wrap.querySelector(`[${CHIP_ATTR}="fitgirl"]`)
-  if (!(fitgirlChip instanceof HTMLElement) && enabledBySource.fitgirl) {
-    fitgirlChip = makeChip("fitgirl", gameTitle)
-  }
-  if (fitgirlChip instanceof HTMLElement && enabledBySource.fitgirl) {
-    fitgirlChip.setAttribute("data-search-query", gameTitle)
-    orderedChips.push(fitgirlChip)
-  }
+  for (const source of sourceKeys) {
+    let chip = wrap.querySelector(`[${CHIP_ATTR}="${source}"]`)
+    if (!(chip instanceof HTMLElement) && enabledBySource[source]) {
+      chip = makeChip(source, gameTitle)
+    }
 
-  let dodiChip = wrap.querySelector(`[${CHIP_ATTR}="dodi"]`)
-  if (!(dodiChip instanceof HTMLElement) && enabledBySource.dodi) {
-    dodiChip = makeChip("dodi", gameTitle)
-  }
-  if (dodiChip instanceof HTMLElement && enabledBySource.dodi) {
-    dodiChip.setAttribute("data-search-query", gameTitle)
-    orderedChips.push(dodiChip)
-  }
-
-  let byxatabChip = wrap.querySelector(`[${CHIP_ATTR}="byxatab"]`)
-  if (!(byxatabChip instanceof HTMLElement) && enabledBySource.byxatab) {
-    byxatabChip = makeChip("byxatab", gameTitle)
-  }
-  if (byxatabChip instanceof HTMLElement && enabledBySource.byxatab) {
-    byxatabChip.setAttribute("data-search-query", gameTitle)
-    orderedChips.push(byxatabChip)
-  }
-
-  let steamripChip = wrap.querySelector(`[${CHIP_ATTR}="steamrip"]`)
-  if (!(steamripChip instanceof HTMLElement) && enabledBySource.steamrip) {
-    steamripChip = makeChip("steamrip", gameTitle)
-  }
-  if (steamripChip instanceof HTMLElement && enabledBySource.steamrip) {
-    steamripChip.setAttribute("data-search-query", gameTitle)
-    orderedChips.push(steamripChip)
-  }
-
-  let ovagamesChip = wrap.querySelector(`[${CHIP_ATTR}="ovagames"]`)
-  if (!(ovagamesChip instanceof HTMLElement) && enabledBySource.ovagames) {
-    ovagamesChip = makeChip("ovagames", gameTitle)
-  }
-  if (ovagamesChip instanceof HTMLElement && enabledBySource.ovagames) {
-    ovagamesChip.setAttribute("data-search-query", gameTitle)
-    orderedChips.push(ovagamesChip)
+    if (chip instanceof HTMLElement && enabledBySource[source]) {
+      chip.setAttribute("data-search-query", gameTitle)
+      orderedChips.push(chip)
+    }
   }
 
   const currentOrder = Array.from(wrap.children).filter(
@@ -198,22 +225,10 @@ const injectChips = (enabledBySource: Record<SourceKey, boolean>) => {
   }
 }
 
-const enabledBySource: Record<SourceKey, boolean> = {
-  fitgirl: true,
-  dodi: true,
-  byxatab: true,
-  steamrip: true,
-  ovagames: true
-}
+const enabledBySource: Record<SourceKey, boolean> = { ...defaultEnabledBySource }
 
 const syncChipToState = () => {
-  if (
-    !enabledBySource.fitgirl &&
-    !enabledBySource.dodi &&
-    !enabledBySource.byxatab &&
-    !enabledBySource.steamrip &&
-    !enabledBySource.ovagames
-  ) {
+  if (sourceKeys.every((source) => !enabledBySource[source])) {
     removeChip()
     return
   }
@@ -223,29 +238,15 @@ const syncChipToState = () => {
 
 const initializeEnabledState = () => {
   chrome.storage.sync.get(
-    [
-      FITGIRL_ENABLED_KEY,
-      DODI_ENABLED_KEY,
-      BYXATAB_ENABLED_KEY,
-      STEAMRIP_ENABLED_KEY,
-      OVA_GAMES_ENABLED_KEY
-    ],
+    sourceKeys.map((source) => sourceMeta[source].storageKey),
     (result) => {
-      const fitgirlStored = result[FITGIRL_ENABLED_KEY]
-      const dodiStored = result[DODI_ENABLED_KEY]
-      const byxatabStored = result[BYXATAB_ENABLED_KEY]
-      const steamripStored = result[STEAMRIP_ENABLED_KEY]
-      const ovagamesStored = result[OVA_GAMES_ENABLED_KEY]
-
-      enabledBySource.fitgirl =
-        typeof fitgirlStored === "boolean" ? fitgirlStored : true
-      enabledBySource.dodi = typeof dodiStored === "boolean" ? dodiStored : true
-      enabledBySource.byxatab =
-        typeof byxatabStored === "boolean" ? byxatabStored : true
-      enabledBySource.steamrip =
-        typeof steamripStored === "boolean" ? steamripStored : true
-      enabledBySource.ovagames =
-        typeof ovagamesStored === "boolean" ? ovagamesStored : true
+      for (const source of sourceKeys) {
+        const storedValue = result[sourceMeta[source].storageKey]
+        enabledBySource[source] =
+          typeof storedValue === "boolean"
+            ? storedValue
+            : defaultEnabledBySource[source]
+      }
 
       syncChipToState()
     }
@@ -256,13 +257,7 @@ let injectTimeout: ReturnType<typeof setTimeout> | null = null
 let lastUrl = window.location.href
 
 const handleDomChange = () => {
-  if (
-    !enabledBySource.fitgirl &&
-    !enabledBySource.dodi &&
-    !enabledBySource.byxatab &&
-    !enabledBySource.steamrip &&
-    !enabledBySource.ovagames
-  ) {
+  if (sourceKeys.every((source) => !enabledBySource[source])) {
     return
   }
 
@@ -313,29 +308,16 @@ if (document.readyState === "loading") {
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName !== "sync") return
 
-  if (FITGIRL_ENABLED_KEY in changes) {
-    const fitgirlNext = changes[FITGIRL_ENABLED_KEY].newValue
-    enabledBySource.fitgirl =
-      typeof fitgirlNext === "boolean" ? fitgirlNext : true
-  }
-  if (DODI_ENABLED_KEY in changes) {
-    const dodiNext = changes[DODI_ENABLED_KEY].newValue
-    enabledBySource.dodi = typeof dodiNext === "boolean" ? dodiNext : true
-  }
-  if (BYXATAB_ENABLED_KEY in changes) {
-    const byxatabNext = changes[BYXATAB_ENABLED_KEY].newValue
-    enabledBySource.byxatab =
-      typeof byxatabNext === "boolean" ? byxatabNext : true
-  }
-  if (STEAMRIP_ENABLED_KEY in changes) {
-    const steamripNext = changes[STEAMRIP_ENABLED_KEY].newValue
-    enabledBySource.steamrip =
-      typeof steamripNext === "boolean" ? steamripNext : true
-  }
-  if (OVA_GAMES_ENABLED_KEY in changes) {
-    const ovagamesNext = changes[OVA_GAMES_ENABLED_KEY].newValue
-    enabledBySource.ovagames =
-      typeof ovagamesNext === "boolean" ? ovagamesNext : true
+  for (const source of sourceKeys) {
+    const change = changes[sourceMeta[source].storageKey]
+    if (!change) {
+      continue
+    }
+
+    enabledBySource[source] =
+      typeof change.newValue === "boolean"
+        ? change.newValue
+        : defaultEnabledBySource[source]
   }
 
   syncChipToState()
