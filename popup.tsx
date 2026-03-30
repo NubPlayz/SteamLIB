@@ -421,7 +421,7 @@ function PopupIndex() {
           rel="noopener noreferrer"
           target="_blank">
           <span aria-hidden="true" className="popup-action-star">
-            *
+            ☆
           </span>
           <span>GitHub</span>
         </a>
