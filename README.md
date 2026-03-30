@@ -10,7 +10,7 @@
 
 SteamLib is a free, open source browser extension that injects source badges directly onto Steam game pages. Making your steam browsing efficient.
 
-Learn more on [Offical site]([https://goodlib.vercel.app](https://steamlib-by-nubplayz.vercel.app))
+Learn more on [Offical site](https://steamlib-by-nubplayz.vercel.app)
 
 
 
