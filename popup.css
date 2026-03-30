@@ -1,7 +1,7 @@
 .popup {
   min-width: 320px;
   max-width: 350px;
-  padding: 18px;
+  padding: 0px 18px;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
@@ -28,7 +28,7 @@
 }
 
 .popup-title-l {
-  color: #0013e6;
+  color: #00f7ee;
   margin-left: 2px;
 }
 
@@ -56,6 +56,126 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.popup-disclaimer {
+  width: min(308px, calc(100% - 24px));
+  padding: 18px;
+  border: 1px solid #d9e4f2;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+}
+
+.popup-disclaimer::backdrop {
+  background: rgba(148, 163, 184, 0.34);
+  backdrop-filter: blur(5px);
+}
+
+.popup-disclaimer-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.popup-disclaimer-title {
+  margin: 14px 0 8px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+.popup-disclaimer-subtitle {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.popup-disclaimer-copy {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.popup-disclaimer-copy--tight {
+  margin-top: 10px;
+}
+
+.popup-disclaimer-copy+.popup-disclaimer-copy {
+  margin-top: 10px;
+}
+
+.popup-disclaimer-list {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #475569;
+}
+
+.popup-disclaimer-item {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.popup-disclaimer-item + .popup-disclaimer-item {
+  margin-top: 8px;
+}
+
+.popup-disclaimer-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.popup-disclaimer-btn {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.popup-disclaimer-btn--cancel {
+  border: 1px solid #d9e4f2;
+  background: #ffffff;
+  color: #334155;
+}
+
+.popup-disclaimer-btn--cancel:hover {
+  transform: translateY(-1px);
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.popup-disclaimer-btn--continue {
+  border: 1px solid #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(220, 38, 38, 0.22);
+}
+
+.popup-disclaimer-btn--continue:hover {
+  transform: translateY(-1px);
+  border-color: #b91c1c;
+  background: #b91c1c;
+  box-shadow: 0 12px 28px rgba(185, 28, 28, 0.28);
 }
 
 .popup-card {
@@ -97,6 +217,11 @@
   background: #ec4899;
 }
 
+.popup-avatar--gog {
+  background: #6b2f8a;
+  font-size: 11px;
+}
+
 .popup-avatar--dodi {
   background:  #000000;
 }
@@ -108,7 +233,7 @@
 }
 
 .popup-avatar--steamrip {
-  background: #4B367C;
+  background: #003385;
 }
 
 .popup-avatar--ovagames {
@@ -195,6 +320,10 @@
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.popup-toggle input:checked+.popup-toggle-track.gog-switch {
+  background: #6b2f8a;
+}
+
 .popup-toggle input:checked+.popup-toggle-track.fitgirl-switch {
   background: #ec4899;
 }
@@ -208,7 +337,7 @@
 }
 
 .popup-toggle input:checked+.popup-toggle-track.steamrip-switch {
-  background: #4B367C;
+  background: #003385;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.ovagames-switch {
@@ -230,7 +359,12 @@
 .popup-footer-help {
   width: 100%;
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  color: #8da0bd;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   opacity: 1;
 }
 
@@ -277,4 +411,9 @@
 .popup-action-star {
   color: #f5b301;
   font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
