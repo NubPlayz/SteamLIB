@@ -85,12 +85,16 @@
 
 .popup-disclaimer {
   width: min(308px, calc(100% - 24px));
+  max-height: 80vh;
   padding: 18px;
   border: 1px solid #d9e4f2;
   border-radius: 20px;
   background: #ffffff;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
   color: #0f172a;
+  margin: auto;
+  inset: 0;
+  overflow-y: auto;
 }
 
 .popup-disclaimer::backdrop {

@@ -220,6 +220,7 @@ function PopupIndex() {
     if (isDisclaimerOpen) {
       if (!dialog.open) {
         dialog.showModal()
+        dialog.scrollTop = 0
       }
       return
     }
