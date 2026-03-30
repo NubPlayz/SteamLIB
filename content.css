@@ -60,11 +60,13 @@
 }
 
 .goodlib-chip--fitgirl .goodlib-chip-icon {
-  background: #ec4899;
+  background: #f64c4c;
+
 }
 
 .goodlib-chip--gog .goodlib-chip-icon {
-  background: #6b2f8a;
+  background: #ffff00fe;
+  color: #000000;
 }
 
 .goodlib-chip--dodi .goodlib-chip-icon {
@@ -77,7 +79,8 @@
 }
 
 .goodlib-chip--steamrip .goodlib-chip-icon {
-  background: #003385;
+  background: #845cf4;
+  color: #ffffff;
 }
 
 .goodlib-chip--ovagames .goodlib-chip-icon {

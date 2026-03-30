@@ -127,7 +127,7 @@
   line-height: 1.5;
 }
 
-.popup-disclaimer-item + .popup-disclaimer-item {
+.popup-disclaimer-item+.popup-disclaimer-item {
   margin-top: 8px;
 }
 
@@ -214,16 +214,19 @@
 }
 
 .popup-avatar--fitgirl {
-  background: #ec4899;
+  background: #f64c4c;
+
 }
 
 .popup-avatar--gog {
-  background: #6b2f8a;
+  background: #ffff00fe;
+  color: #000000;
+
   font-size: 11px;
 }
 
 .popup-avatar--dodi {
-  background:  #000000;
+  background: #000000;
 }
 
 .popup-avatar--byxatab {
@@ -233,7 +236,7 @@
 }
 
 .popup-avatar--steamrip {
-  background: #003385;
+  background: #845cf4;
 }
 
 .popup-avatar--ovagames {
@@ -321,11 +324,11 @@
 }
 
 .popup-toggle input:checked+.popup-toggle-track.gog-switch {
-  background: #6b2f8a;
+  background: #ffff00fe;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.fitgirl-switch {
-  background: #ec4899;
+  background: #f64c4c;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.dodi-switch {
@@ -337,7 +340,7 @@
 }
 
 .popup-toggle input:checked+.popup-toggle-track.steamrip-switch {
-  background: #003385;
+  background: #845cf4;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.ovagames-switch {
