@@ -5,12 +5,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 
-
 **Open any Steam game page on GOG , Fitgirl , Dodi or more in one click.**
 
 SteamLib is a free, open source browser extension that injects source badges directly onto Steam game pages. Making your steam browsing efficient.
 
 Learn more on [Offical site](https://steamlib-by-nubplayz.vercel.app)
+
+<img width="524" height="524" alt="collab mascot (goodLIB   SteamLIB)  " src="https://github.com/user-attachments/assets/c13072d0-370a-432e-8863-a68f9ebf81fa" />
 
 
 
