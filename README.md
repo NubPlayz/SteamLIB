@@ -1,7 +1,7 @@
 #  SteamLib  <img width="100" height="100" alt="Buzo" src="https://github.com/user-attachments/assets/2331d037-3bba-48b7-8ba4-4c3dbfd121a8" />
 
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue?logo=googlechrome)]()
-[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange?logo=firefox)]()
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/steamlib-fitgirl-dodi-s-e/gnnjojpdeeahajmfefkiocdcefblegkp?authuser=0&hl=en)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange?logo=firefox)](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 
@@ -36,8 +36,12 @@ Learn more on [Offical site](https://steamlib-by-nubplayz.vercel.app)
 ## Demo 
 
 
-here i will insert video.
 
+
+
+
+
+https://github.com/user-attachments/assets/f0d51cca-4327-41bf-a3e7-80f8140990e7
 
 
 
@@ -48,9 +52,9 @@ here i will insert video.
 
 | Browser | Link |
 |---|---|
-| Chrome | [Chrome Web Store]() |
-| Firefox | [Firefox Add-ons]() |
-| Firefox Mobile | [Firefox Add-ons]() |
+| Chrome | [Chrome Web Store](https://chromewebstore.google.com/detail/steamlib-fitgirl-dodi-s-e/gnnjojpdeeahajmfefkiocdcefblegkp?authuser=0&hl=en) |
+| Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/) |
+| Firefox Mobile | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/) |
 
 
 
