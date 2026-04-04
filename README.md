@@ -1,52 +1,49 @@
-# <img width="128" height="128" alt="icon_128x128" src="https://github.com/user-attachments/assets/8e9dac2d-286b-4554-8a1a-423440989714" /> GoodLib
+#  SteamLib  <img width="100" height="100" alt="Buzo" src="https://github.com/user-attachments/assets/2331d037-3bba-48b7-8ba4-4c3dbfd121a8" />
 
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/goodlib-zlib-annas-archiv/aiampblkjnmfogckjfiecodcnenleehp?authuser=0&hl=en)
-[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange?logo=firefox)](https://addons.mozilla.org/en-US/firefox/addon/goodlib-zlib-anna-s-archive/)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue?logo=googlechrome)](https://chromewebstore.google.com/detail/steamlib-fitgirl-dodi-s-e/gnnjojpdeeahajmfefkiocdcefblegkp?authuser=0&hl=en)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--ons-orange?logo=firefox)](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 
-**Open any Goodreads or Hardcover book on Anna's Archive, Z-Library, or Gutenberg in one click.**
+**Open any Steam game page on GOG , Fitgirl , Dodi or more in one click.**
 
-GoodLib is a free, open source browser extension that injects source badges directly onto Goodreads and Hardcover book pages. No more copying titles and searching manually 
+SteamLib is a free, open source browser extension that injects source badges directly onto Steam game pages. Making your steam browsing efficient.
 
-Learn more on [Offical site](https://goodlib.vercel.app)
+Learn more on [Offical site](https://steamlib-by-nubplayz.vercel.app)
+
+<img width="524" height="524" alt="collab mascot (goodLIB   SteamLIB)  " src="https://github.com/user-attachments/assets/f97186a7-530b-42d1-ad7a-fadf0c12e90c" />
 
 
 
 ## Features
 
 
-<img width="1280" height="800" alt="Untitled design (5)" src="https://github.com/user-attachments/assets/7debd26f-9192-4c7f-8714-503f9ed4febf" />
+
+<img width="1280" height="800" alt="a" src="https://github.com/user-attachments/assets/137534dc-8369-4c93-a5eb-8fb3bd54dd7c" />
 
 
 
 
 
-- **One-click access** : badges appear directly on Goodreads and Hardcover book pages, linking straight to the searched result
+- **One-click access** : badges appear directly on Steam game page linking straight to the searched result
 - **No more copying titles and searching manually** 
-- **Toggleable sources** : enable or disable individual sources from the popup (e.g. only show Z-Lib and Anna's, hide Gutenberg)
+- **Toggleable sources** : enable or disable individual sources from the popup (e.g. only show Fitgirl and Dodi, hide GOG)
 - **Animated UI** : powered by Anime.js v4
-- **Zero data collection** : the extension only activates on supported book pages, collects nothing, and stores only your source toggle preferences locally
-- **Cross-browser** : works on Chrome (MV3) and Firefox (MV3)
+- **Zero data collection** : the extension only activates on supported Game pages, collects nothing, and stores only your source toggle preferences locally
+- **Cross-browser** : works on Chrome (MV3) and Firefox (MV2)
 
 
 
 ## Demo 
 
 
-https://github.com/user-attachments/assets/04edaabf-a3df-471f-8cd1-5a308f5572c8
 
-## Mobile view (firefox)
 
-![mobile 1](https://github.com/user-attachments/assets/e40fa86f-0758-4164-9871-8cb46ef4fd9c)
 
---
 
-![mobile promo 2](https://github.com/user-attachments/assets/488e36fb-a881-4e04-a447-2cf861a28367)
 
-##  Mobile demo 
+https://github.com/user-attachments/assets/f0d51cca-4327-41bf-a3e7-80f8140990e7
 
-https://github.com/user-attachments/assets/7f2a5aa0-b6c8-4a2d-be4d-8d6b4daaefb1
 
 
 
@@ -56,18 +53,21 @@ https://github.com/user-attachments/assets/7f2a5aa0-b6c8-4a2d-be4d-8d6b4daaefb1
 
 | Browser | Link |
 |---|---|
-| Chrome | [Chrome Web Store](https://chromewebstore.google.com/detail/goodlib-zlib-annas-archiv/aiampblkjnmfogckjfiecodcnenleehp) |
-| Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/goodlib-zlib-anna-s-archive/) |
-| Firefox Mobile | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/goodlib-zlib-anna-s-archive/) |
+| Chrome | [Chrome Web Store](https://chromewebstore.google.com/detail/steamlib-fitgirl-dodi-s-e/gnnjojpdeeahajmfefkiocdcefblegkp?authuser=0&hl=en) |
+| Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/) |
+| Firefox Mobile | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/steamlib-fitgirl-dodi-steam/) |
 
 
 
 ## Supported Sources
 
 
- - Anna's Archive
- - Z-Library
- - Project Gutenberg 
+ - GOG
+ - Fitgirl
+ - Dodi
+ - XAtab
+ - Steamrip
+ - Ovagames
 > More sources planned based on feedback.
 
 ---
@@ -81,7 +81,7 @@ https://github.com/user-attachments/assets/7f2a5aa0-b6c8-4a2d-be4d-8d6b4daaefb1
 | UI | React (popup) |
 | Animations | Anime.js |
 | Package Manager | pnpm |
-| Manifest | MV3 (Chrome + Firefox) |
+| Manifest | MV3 (Chrome)  & (MV2) Firefox) |
 
 
 
@@ -95,8 +95,8 @@ https://github.com/user-attachments/assets/7f2a5aa0-b6c8-4a2d-be4d-8d6b4daaefb1
 ### Development
 
 ```bash
-git clone https://github.com/NubPlayz/GoodLib-Zlib-Goodreads-extension
-cd GoodLib-Zlib-Goodreads-extension
+git clone https://github.com/NubPlayz/SteamLIB
+cd SteamLIB
 pnpm install
 
 ```
@@ -113,10 +113,11 @@ Then load `build/chrome-mv3-dev` as an unpacked extension in Chrome, or the equi
 
 ## Privacy
 
-GoodLib requests host permissions only for supported book pages:
+SteamLib requests host permissions only for game pages:
 
-- `https://www.goodreads.com/book/*`
-- `https://hardcover.app/books/*`
+- `https://store.steampowered.com/app/*`
+- `https://store.steampowered.com/agecheck/app/*`
+
 
 - No user data is collected or transmitted
 - Source toggle preferences are stored locally via the `storage` permission
@@ -133,7 +134,7 @@ Issues and PRs are welcome. If a source URL has changed or you want a new source
 
 ## Disclaimer
 
-Goodlib is a search tool (Extension ) that displays results from external metadata providers and sources.
+Stemalib is a search tool (Extension ) that displays results from external metadata providers and sources.
 It does not host, store, or distribute any content.
 The developers are not responsible for how the tool is used or what is accessed through it.
 
@@ -144,7 +145,7 @@ Users are solely responsible for:
 - Understanding and accepting the terms of any sources they configure
 - Use of this tool is entirely at your own risk.
  
-Not affiliated with Goodreads, Hardcover, Z-Library, Anna's Archive, or Project Gutenberg.
+SteamLIB is not affiliated with, endorsed by, or associated with Steam, GOG, or any third-party distributors.
  
 
 ## License
