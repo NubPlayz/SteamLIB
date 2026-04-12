@@ -5,6 +5,7 @@ import "./popup.css"
 import mascotCat from "./mascot cat.png"
 
 const GOG_ENABLED_KEY = "gogEnabled"
+const GOG_GAMES_ENABLED_KEY = "gogGamesEnabled"
 const EXTERNAL_SOURCES_DISCLAIMER_SEEN_KEY = "externalSourcesDisclaimerSeen"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
@@ -14,6 +15,7 @@ const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
 
 type SourceKey =
   | "gog"
+  | "goggames"
   | "fitgirl"
   | "dodi"
   | "byxatab"
@@ -41,6 +43,16 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
     subtitle: "www.gog.com/en",
     tagClassName: "anime-tag-gog",
     trackClassName: "gog-switch"
+  },
+  goggames: {
+    avatarClassName: "popup-avatar--goggames",
+    avatarText: "GG",
+    label: "GOG Games",
+    rowClassName: "anime-row-goggames",
+    storageKey: GOG_GAMES_ENABLED_KEY,
+    subtitle: "gog-games.to",
+    tagClassName: "anime-tag-goggames",
+    trackClassName: "goggames-switch"
   },
   fitgirl: {
     avatarClassName: "popup-avatar--fitgirl",
@@ -96,6 +108,7 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
 
 const sourceKeys: SourceKey[] = [
   "gog",
+  "goggames",
   "fitgirl",
   "dodi",
   "byxatab",
@@ -105,6 +118,7 @@ const sourceKeys: SourceKey[] = [
 
 const defaultEnabledBySource: Record<SourceKey, boolean> = {
   gog: true,
+  goggames: false,
   fitgirl: false,
   dodi: false,
   byxatab: false,

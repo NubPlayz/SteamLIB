@@ -69,6 +69,11 @@
   color: #000000;
 }
 
+.goodlib-chip--goggames .goodlib-chip-icon {
+  background: #ffb300;
+  color: #111827;
+}
+
 .goodlib-chip--dodi .goodlib-chip-icon {
   background: #000000;
 }

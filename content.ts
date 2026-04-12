@@ -11,6 +11,7 @@ const CHIP_ATTR = "data-steamlib-chip"
 const CHIP_CLASS = "goodlib-chip"
 const CHIPS_WRAP_ATTR = "data-steamlib-chip-wrap"
 const GOG_ENABLED_KEY = "gogEnabled"
+const GOG_GAMES_ENABLED_KEY = "gogGamesEnabled"
 const FITGIRL_ENABLED_KEY = "fitgirlEnabled"
 const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
@@ -66,6 +67,7 @@ const removeChip = () => {
 
 type SourceKey =
   | "gog"
+  | "goggames"
   | "fitgirl"
   | "dodi"
   | "byxatab"
@@ -74,6 +76,7 @@ type SourceKey =
 
 const sourceKeys: SourceKey[] = [
   "gog",
+  "goggames",
   "fitgirl",
   "dodi",
   "byxatab",
@@ -85,10 +88,16 @@ const sourceMeta: Record<
   SourceKey,
   { glyph: string; label: string; storageKey: string }
 > = {
-  gog: { 
+  gog: {
     label: "GOG",
     glyph: "G",
-    storageKey: GOG_ENABLED_KEY },
+    storageKey: GOG_ENABLED_KEY
+  },
+  goggames: {
+    label: "GOG Games",
+    glyph: "GG",
+    storageKey: GOG_GAMES_ENABLED_KEY
+  },
   fitgirl: {
     label: "FitGirl",
     glyph: "FG",
@@ -118,6 +127,7 @@ const sourceMeta: Record<
 
 const defaultEnabledBySource: Record<SourceKey, boolean> = {
   gog: true,
+  goggames: false,
   fitgirl: false,
   dodi: false,
   byxatab: false,
@@ -131,6 +141,11 @@ const buildSourceUrl = (source: SourceKey, query: string) => {
   if (source === "gog") {
     const gogQuery = encodeURIComponent(getGogSearchQuery(query))
     return `https://www.gog.com/en/games?query=${gogQuery}&order=desc:score`
+  }
+
+  if (source === "goggames") {
+    const gogGamesQuery = encodeURIComponent(getGogSearchQuery(query))
+    return `https://gog-games.to/?search=${gogGamesQuery}`
   }
 
   if (source === "dodi") {

@@ -252,6 +252,12 @@
   font-size: 11px;
 }
 
+.popup-avatar--goggames {
+  background: #ffb300;
+  color: #111827;
+  font-size: 11px;
+}
+
 .popup-avatar--dodi {
   background: #000000;
 }
@@ -352,6 +358,10 @@
 
 .popup-toggle input:checked+.popup-toggle-track.gog-switch {
   background: #ffff00fe;
+}
+
+.popup-toggle input:checked+.popup-toggle-track.goggames-switch {
+  background: #ffb300;
 }
 
 .popup-toggle input:checked+.popup-toggle-track.fitgirl-switch {
