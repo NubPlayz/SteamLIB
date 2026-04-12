@@ -413,7 +413,7 @@ function PopupIndex() {
 
       <div className="popup-footer">
         <div className="popup-footer-help">
-          Support me by starring on GitHub and rating it.
+          Support me by starring on GitHub and rating it!
         </div>
 
         <a
