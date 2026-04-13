@@ -1,7 +1,7 @@
 {
   "name": "steamlib",
   "displayName": "SteamLIB - FitGirl & Dodi 's Extension Steam",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Open Steam games on FitGirl, DODI, Xatab, GOG, or more in one click.",
   "author": "NubPlayz",
   "scripts": {
