@@ -12,6 +12,7 @@ const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
 const STEAMRIP_ENABLED_KEY = "steamripEnabled"
 const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
+const CS_RIN_ENABLED_KEY = "csrinEnabled"
 
 type SourceKey =
   | "gog"
@@ -21,6 +22,7 @@ type SourceKey =
   | "byxatab"
   | "steamrip"
   | "ovagames"
+  | "csrin"
 
 type SourceConfig = {
   avatarClassName: string
@@ -103,6 +105,16 @@ const sourceConfig: Record<SourceKey, SourceConfig> = {
     subtitle: "ovagames.com",
     tagClassName: "anime-tag-ovagames",
     trackClassName: "ovagames-switch"
+  },
+  csrin: {
+    avatarClassName: "popup-avatar--csrin",
+    avatarText: "CS",
+    label: "CS.RIN.RU",
+    rowClassName: "anime-row-csrin",
+    storageKey: CS_RIN_ENABLED_KEY,
+    subtitle: "cs.rin.ru/forum",
+    tagClassName: "anime-tag-csrin",
+    trackClassName: "csrin-switch"
   }
 }
 
@@ -113,7 +125,8 @@ const sourceKeys: SourceKey[] = [
   "dodi",
   "byxatab",
   "steamrip",
-  "ovagames"
+  "ovagames",
+  "csrin"
 ]
 
 const defaultEnabledBySource: Record<SourceKey, boolean> = {
@@ -123,7 +136,8 @@ const defaultEnabledBySource: Record<SourceKey, boolean> = {
   dodi: false,
   byxatab: false,
   steamrip: false,
-  ovagames: false
+  ovagames: false,
+  csrin: false
 }
 
 const runToggleAnimation = (source: SourceKey, isEnabled: boolean) => {
