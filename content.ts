@@ -17,6 +17,7 @@ const DODI_ENABLED_KEY = "dodiEnabled"
 const BYXATAB_ENABLED_KEY = "byxatabEnabled"
 const STEAMRIP_ENABLED_KEY = "steamripEnabled"
 const OVA_GAMES_ENABLED_KEY = "ovaGamesEnabled"
+const CS_RIN_ENABLED_KEY = "csrinEnabled"
 
 const steamTitleSelectors = [
   "#appHubAppName",
@@ -73,6 +74,7 @@ type SourceKey =
   | "byxatab"
   | "steamrip"
   | "ovagames"
+  | "csrin"
 
 const sourceKeys: SourceKey[] = [
   "gog",
@@ -81,7 +83,8 @@ const sourceKeys: SourceKey[] = [
   "dodi",
   "byxatab",
   "steamrip",
-  "ovagames"
+  "ovagames",
+  "csrin"
 ]
 
 const sourceMeta: Record<
@@ -122,6 +125,11 @@ const sourceMeta: Record<
     label: "OVA Games",
     glyph: "OVA",
     storageKey: OVA_GAMES_ENABLED_KEY
+  },
+  csrin: {
+    label: "CS.RIN.RU",
+    glyph: "CS",
+    storageKey: CS_RIN_ENABLED_KEY
   }
 }
 
@@ -132,7 +140,8 @@ const defaultEnabledBySource: Record<SourceKey, boolean> = {
   dodi: false,
   byxatab: false,
   steamrip: false,
-  ovagames: false
+  ovagames: false,
+  csrin: false
 }
 
 const buildSourceUrl = (source: SourceKey, query: string) => {
@@ -162,6 +171,10 @@ const buildSourceUrl = (source: SourceKey, query: string) => {
 
   if (source === "ovagames") {
     return `https://www.ovagames.com/?s=${encoded}`
+  }
+
+  if (source === "csrin") {
+    return `https://cs.rin.ru/forum/search.php?keywords=${encoded}&terms=all&author=&sc=1&sf=titleonly&sr=topics&sk=t&sd=d&st=0&ch=300&t=0&submit=Search`
   }
 
   return `https://fitgirl-repacks.site/?s=${encoded}`

@@ -92,6 +92,11 @@
   background: #f97316;
 }
 
+.goodlib-chip--csrin .goodlib-chip-icon {
+  background: #2A475E;
+  color: #f8fafc;
+}
+
 .goodlib-chip-glyph {
   font-size: 9px;
   font-weight: 800;
