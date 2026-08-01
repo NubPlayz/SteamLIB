@@ -11,7 +11,7 @@ SteamLib is a free, open source browser extension that injects source badges dir
 
 Learn more on [Offical site](https://steamlib-by-nubplayz.vercel.app)
 
-<img width="524" height="524" alt="collab mascot (goodLIB   SteamLIB)  " src="https://github.com/user-attachments/assets/f97186a7-530b-42d1-ad7a-fadf0c12e90c" />
+
 
 
 
